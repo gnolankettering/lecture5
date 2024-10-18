@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>To-Do List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        input[type="text"] {
+            padding: 5px;
+            font-size: 16px;
+        }
+        button {
+            padding: 5px 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>To Do</h1>
+    <ul>
+        {% for index, todo in todos %}
+            <li>
+                <input type="checkbox" {% if todo.done %}checked{% endif %} onclick="window.location.href='/toggle/{{ index }}'">
+                {{ todo.task }}
+                <a href="/delete/{{ index }}" style="margin-left: 10px;">Delete</a>
+            </li>
+        {% endfor %}
+    </ul>
+    <form method="POST" action="/add">
+        <input type="text" name="new_item" placeholder="New Item">
+        <button type="submit">Add</button>
+    </form>
+</body>
+</html>
