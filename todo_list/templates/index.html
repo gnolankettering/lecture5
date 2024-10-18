@@ -29,13 +29,14 @@
         {% for index, todo in todos %}
             <li>
                 <input type="checkbox" {% if todo.done %}checked{% endif %} onclick="window.location.href='/toggle/{{ index }}'">
-                {{ todo.task }}
+                {{ todo.task }} - <em>Deadline: {{ todo.deadline }}</em>
                 <a href="/delete/{{ index }}" style="margin-left: 10px;">Delete</a>
             </li>
         {% endfor %}
     </ul>
     <form method="POST" action="/add">
         <input type="text" name="new_item" placeholder="New Item">
+        <input type="text" name="deadline" placeholder="Deadline (YYYY-MM-DD)">
         <button type="submit">Add</button>
     </form>
 </body>
