@@ -1,12 +1,13 @@
 from flask import Flask, render_template, request, redirect, url_for
 from builtins import enumerate
+from datetime import datetime
 
 app = Flask(__name__)
 
 todo_list = [
-    {"task": "Buy Milk", "done": True},
-    {"task": "Email", "done": False},
-    {"task": "Laundry", "done": False},
+    {"task": "Buy Milk", "done": True, "deadline": "2024-10-20"},
+    {"task": "Email", "done": False, "deadline": "2024-10-21"},
+    {"task": "Laundry", "done": False, "deadline": "2024-10-22"},
 ]
 
 @app.route('/')
@@ -16,8 +17,13 @@ def index():
 @app.route('/add', methods=['POST'])
 def add():
     new_task = request.form.get('new_item')
-    if new_task:
-        todo_list.append({"task": new_task, "done": False})
+    deadline = request.form.get('deadline')
+    if new_task and deadline:
+        try:
+            datetime.strptime(deadline, '%Y-%m-%d')  # Validate date format
+            todo_list.append({"task": new_task, "done": False, "deadline": deadline})
+        except ValueError:
+            pass  # Ignore invalid dates
     return redirect(url_for('index'))
 
 @app.route('/toggle/<int:task_id>')
